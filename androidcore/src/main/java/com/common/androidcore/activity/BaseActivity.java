@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 重载startActivity
      *
-     * @param cls
+     * @param cls 需要跳转的activity的class
      */
     public void startActivity(Class<?> cls) {
         startActivity(cls, null);
@@ -104,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 重载startActivity
      *
-     * @param cls
+     * @param cls 需要跳转的activity的class
      */
     public void startActivity(Class<?> cls, Object obj) {
         Intent intent = new Intent(this, cls);
@@ -116,7 +116,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 重载startActivityForResult
      *
-     * @param cls
+     * @param cls 需要跳转的activity的class
      */
     public void startActivityForResult(Class<?> cls, Object obj, int requestCode) {
         Intent intent = new Intent(this, cls);
@@ -213,10 +213,4 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean isSDCardLoad() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
-
-
-
-
-
-
 }

@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.common.androidcore.BaseApplication;
+import com.common.androidcore.R;
+import com.common.androidcore.app.AppInfoUtil;
+import com.common.androidcore.logger.Logger;
+import com.common.androidcore.widget.ToastUtil;
+
 import java.io.Serializable;
-import java.lang.reflect.Field;
 
 /**
  * @author lifan 创建于 2013年11月13日 上午11:16:40
@@ -27,14 +31,65 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 初始化数据，子类必须实现此方法
+     *
+     * @return 是否继续加载页面
      */
-    public abstract void initData();
+    protected abstract boolean initData();
+
+    /**
+     * 获取activity的布局id
+     *
+     * @return activity布局ID
+     */
+    protected abstract int getActivityContentViewId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.initView();
-        this.initData();
+        BaseApplication.IS_FOREGROUND = true;
+        BaseApplication.setTopActivity(this);
+        Logger.d("onCreate当前activity为：%s", BaseApplication.getTopActivity());
+
+        setContentView(getActivityContentViewId());
+        initView();
+        if (!initData()) {
+            ToastUtil.showToast(getContext(), R.string.no_data_tips);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Logger.d("onResume当前activity为：%s", BaseApplication.getTopActivity());
+        BaseApplication.setTopActivity(this);
+        if (!BaseApplication.IS_FOREGROUND) {
+            BaseApplication.IS_FOREGROUND = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        BaseApplication.IS_FOREGROUND = AppInfoUtil.getInstance(getContext()).checkAppIsForeground();
+        super.onPause();
+    }
+
+    /**
+     * 获取Application的Context
+     *
+     * @return Application的Context
+     */
+    public Context getContext() {
+        return getApplication();
+    }
+
+    /**
+     * 获取Activity的Context
+     *
+     * @return Activity的Context
+     */
+    public Context getSelfContext() {
+        return this;
     }
 
     /**
@@ -159,80 +214,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
-    /**
-     * px值转dp值
-     *
-     * @param pxValue px值
-     * @return dp值
-     */
-    public int px2dp(float pxValue) {
-        final float scale = this.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
 
-    /**
-     * dp值转px值
-     *
-     * @param dpValue dp值
-     * @return px 值
-     */
-    public int dp2px(float dpValue) {
-        final float scale = this.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
 
-    /**
-     * 获得状态栏高度
-     *
-     * @return 状态栏高度
-     */
-    public int getStatusBarHeight() {
-        int statusBarHeight = 0;
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            statusBarHeight = this.getResources().getDimensionPixelSize(x);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        return statusBarHeight;
-    }
 
-    /**
-     * 字符串排版半角转全角
-     * @param input
-     * @return
-     */
-    public  String toDBC(String input) {
-        char[] c = input.toCharArray();
-        for (int i = 0; i< c.length; i++) {
-            if (c[i] == 12288) {
-                c[i] = (char) 32;
-                continue;
-            }if (c[i]> 65280&& c[i]< 65375)
-                c[i] = (char) (c[i] - 65248);
-        }
-        return new String(c);
-    }
-    /**
-     * 获得屏幕宽度
-     *
-     * @return 屏幕宽度
-     */
-    public int getWidth() {
-        DisplayMetrics dm = this.getResources().getDisplayMetrics();
-        return dm.widthPixels;
-    }
 
-    /**
-     * 获得屏幕高度
-     *
-     * @return 屏幕高度
-     */
-    public int getHeight() {
-        DisplayMetrics dm = this.getResources().getDisplayMetrics();
-        return dm.heightPixels;
-    }
+
 }

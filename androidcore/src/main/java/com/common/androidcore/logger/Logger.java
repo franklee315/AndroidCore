@@ -16,8 +16,7 @@ import java.util.Locale;
  * @author lifan 创建于 2013年10月29日 下午12:01:05
  * @version Ver 1.0 2013年10月29日 改订 log工具类
  */
-public class LogUtil {
-
+public class Logger {
     private static final String LOG_NAME = "log.txt";
     private static String LOG_DIR = Environment.getExternalStorageDirectory().getAbsolutePath();
     private static boolean DEBUG = false;
@@ -63,44 +62,16 @@ public class LogUtil {
         LOG_DIR = dirPath;
     }
 
-    /**
-     * 获取默认tag
-     *
-     * @param caller
-     * @return
-     */
-    private static String generateTag(StackTraceElement caller) {
-        String tag = "%s.%s(L:%d)";
-        String callerClazzName = caller.getClassName();
-        callerClazzName = callerClazzName.substring(callerClazzName.lastIndexOf(".") + 1);
-        tag = String.format(tag, callerClazzName, caller.getMethodName(), caller.getLineNumber());
-        return tag;
-    }
 
     /**
      * 输出verbose级别的日志
      *
-     * @param msg log的内容
+     * @param format 字符串格式
+     * @param args   格式化参数
      */
-    public static void v(String msg) {
+    public static void v(String format, Object... args) {
+        String msg = String.format(format, args);
         String tag = generateTag(Thread.currentThread().getStackTrace()[4]);
-
-        if (DEBUG) {
-            android.util.Log.v(tag, msg);
-        }
-
-        if (SAVE_LOG_TO_FILE) {
-            sendHandlerMsg("Verbose", tag, msg);
-        }
-    }
-
-    /**
-     * 输出verbose级别的日志
-     *
-     * @param tag log标签
-     * @param msg log的内容
-     */
-    public static void v(String tag, String msg) {
         if (DEBUG) {
             android.util.Log.v(tag, msg);
         }
@@ -113,26 +84,12 @@ public class LogUtil {
     /**
      * 输出debug级别的日志
      *
-     * @param msg log的内容
+     * @param format 字符串格式
+     * @param args   格式化参数
      */
-    public static void d(String msg) {
+    public static void d(String format, Object... args) {
+        String msg = String.format(format, args);
         String tag = generateTag(Thread.currentThread().getStackTrace()[4]);
-        if (DEBUG) {
-            android.util.Log.d(tag, msg);
-        }
-
-        if (SAVE_LOG_TO_FILE) {
-            sendHandlerMsg("Debug", tag, msg);
-        }
-    }
-
-    /**
-     * 输出debug级别的日志
-     *
-     * @param tag log标签
-     * @param msg log的内容
-     */
-    public static void d(String tag, String msg) {
         if (DEBUG) {
             android.util.Log.d(tag, msg);
         }
@@ -145,26 +102,12 @@ public class LogUtil {
     /**
      * 输出info级别的日志
      *
-     * @param msg log的内容
+     * @param format 字符串格式
+     * @param args   格式化参数
      */
-    public static void i(String msg) {
+    public static void i(String format, Object... args) {
+        String msg = String.format(format, args);
         String tag = generateTag(Thread.currentThread().getStackTrace()[4]);
-        if (DEBUG) {
-            android.util.Log.i(tag, msg);
-        }
-
-        if (SAVE_LOG_TO_FILE) {
-            sendHandlerMsg("Info", tag, msg);
-        }
-    }
-
-    /**
-     * 输出info级别的日志
-     *
-     * @param tag log标签
-     * @param msg log的内容
-     */
-    public static void i(String tag, String msg) {
         if (DEBUG) {
             android.util.Log.i(tag, msg);
         }
@@ -177,26 +120,12 @@ public class LogUtil {
     /**
      * 输出warn级别的日志
      *
-     * @param msg log的内容
+     * @param format 字符串格式
+     * @param args   格式化参数
      */
-    public static void w(String msg) {
+    public static void w(String format, Object... args) {
+        String msg = String.format(format, args);
         String tag = generateTag(Thread.currentThread().getStackTrace()[4]);
-        if (DEBUG) {
-            android.util.Log.w(tag, msg);
-        }
-
-        if (SAVE_LOG_TO_FILE) {
-            sendHandlerMsg("Warn", tag, msg);
-        }
-    }
-
-    /**
-     * 输出warn级别的日志
-     *
-     * @param tag log标签
-     * @param msg log的内容
-     */
-    public static void w(String tag, String msg) {
         if (DEBUG) {
             android.util.Log.w(tag, msg);
         }
@@ -209,9 +138,11 @@ public class LogUtil {
     /**
      * 输出error级别的日志
      *
-     * @param msg log的内容
+     * @param format 字符串格式
+     * @param args   格式化参数
      */
-    public static void e(String msg) {
+    public static void e(String format, Object... args) {
+        String msg = String.format(format, args);
         String tag = generateTag(Thread.currentThread().getStackTrace()[4]);
         if (DEBUG) {
             android.util.Log.e(tag, msg);
@@ -223,22 +154,15 @@ public class LogUtil {
     }
 
     /**
-     * 输出error级别的日志
+     * 输出error级别的日志，并打印异常信息
      *
-     * @param tag log标签
-     * @param msg log的内容
+     * @param tr     异常信息
+     * @param format 字符串格式
+     * @param args   格式化参数
      */
-    public static void e(String tag, String msg) {
-        if (DEBUG) {
-            android.util.Log.e(tag, msg);
-        }
-
-        if (SAVE_LOG_TO_FILE) {
-            sendHandlerMsg("Error", tag, msg);
-        }
-    }
-
-    public static void e(String tag, String msg, Throwable tr) {
+    public static void e(Throwable tr, String format, Object... args) {
+        String msg = String.format(format, args);
+        String tag = generateTag(Thread.currentThread().getStackTrace()[4]);
         if (DEBUG) {
             android.util.Log.e(tag, msg, tr);
         }
@@ -246,6 +170,14 @@ public class LogUtil {
         if (SAVE_LOG_TO_FILE) {
             sendHandlerMsg("Error", tag, msg);
         }
+    }
+
+    private static String generateTag(StackTraceElement caller) {
+        String tag = "%s.%s(L:%d)";
+        String callerClazzName = caller.getClassName();
+        callerClazzName = callerClazzName.substring(callerClazzName.lastIndexOf(".") + 1);
+        tag = String.format(tag, callerClazzName, caller.getMethodName(), caller.getLineNumber());
+        return tag;
     }
 
     private static void sendHandlerMsg(String level, String tag, String content) {

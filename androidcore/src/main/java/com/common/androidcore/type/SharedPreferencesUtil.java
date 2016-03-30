@@ -3,6 +3,7 @@ package com.common.androidcore.type;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -270,7 +271,7 @@ public class SharedPreferencesUtil {
      */
     public Serializable getSerializableObject(String key) {
         String serStr = getString(key, null);
-        if (StringUtil.isEmpty(serStr)) {
+        if (TextUtils.isEmpty(serStr)) {
             return null;
         }
         try {

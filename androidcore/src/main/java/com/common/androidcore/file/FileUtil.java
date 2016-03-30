@@ -198,4 +198,14 @@ public class FileUtil {
         long size = getDirSize(dir);
         return getSizeString(size);
     }
+
+    /**
+     * 判断该文件是否是一个图片
+     *
+     * @param fileName 文件名
+     * @return 是否是一个图片
+     */
+    public static boolean isImage(String fileName) {
+        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png");
+    }
 }

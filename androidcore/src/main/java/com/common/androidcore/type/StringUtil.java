@@ -1,8 +1,9 @@
 package com.common.androidcore.type;
 
+import android.text.TextUtils;
 import android.util.Base64;
 
-import com.common.androidcore.bean.Param;
+import com.common.androidcore.bean.KeyValue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,6 +53,11 @@ public class StringUtil {
         }
     }
 
+    /**
+     * 解析字符串为boolean
+     * @param str 字符串
+     * @return boolean值
+     */
     public static boolean parseBoolean(String str) {
         return str.equals("true") || str.equals("1");
     }
@@ -102,16 +108,6 @@ public class StringUtil {
      */
     public static boolean isPostalCode(String str) {
         return str.matches("[1-9]\\d{5}(?!\\d)");
-    }
-
-    /**
-     * 判断字符串是否为空
-     *
-     * @param str 需要判断的字符串
-     * @return 是否为空
-     */
-    public static boolean isEmpty(String str) {
-        return str == null || str.equals("") || str.equals("NULL") || str.equals("null") || str.length() == 0;
     }
 
     /**
@@ -174,7 +170,7 @@ public class StringUtil {
         String[] temp = url.split("\\?");
         String params = temp.length > 1 ? temp[1] : "";
 
-        if (!StringUtil.isEmpty(params)) {
+        if (!TextUtils.isEmpty(params)) {
             temp = params.split("&");
 
             for (String keyValue : temp) {
@@ -193,12 +189,12 @@ public class StringUtil {
      * @param url URL
      * @return 所有参数
      */
-    public static List<Param> getUrlParams(String url) {
-        List<Param> allParams = new ArrayList<>();
+    public static List<KeyValue> getUrlParams(String url) {
+        List<KeyValue> allKeyValues = new ArrayList<>();
         String[] temp = url.split("\\?");
         String params = temp.length > 1 ? temp[1] : "";
 
-        if (!StringUtil.isEmpty(params)) {
+        if (!TextUtils.isEmpty(params)) {
             temp = params.split("&");
 
             for (String keyValue : temp) {
@@ -206,14 +202,14 @@ public class StringUtil {
                 if (keyValueArray.length > 1) {
                     try {
                         String value = URLDecoder.decode(keyValueArray[1], "UTF-8");
-                        allParams.add(new Param(keyValueArray[0], value));
+                        allKeyValues.add(new KeyValue(keyValueArray[0], value));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-        return allParams;
+        return allKeyValues;
     }
 
     /**

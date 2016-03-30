@@ -41,6 +41,26 @@ public class NumberUtil {
         return result;
     }
 
+    /**
+     * 控制浮点的精度
+     * @param value 原始值
+     * @param scale 精度位数（保留的小数位数）
+     * @param roundMode 精度取值方式
+     * @return 精度计算后的数据
+     */
+    public static double round(double value, int scale, int roundMode) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(scale, roundMode);
+        double d= bd.doubleValue();
+        bd = null;
+        return d;
+    }
+
+    /**
+     * double加法运算
+     * @param doubles 需要进行运算的double
+     * @return
+     */
     public static double doubleAddition(double... doubles) {
         BigDecimal bigDecimal = new BigDecimal(0);
         for (double num : doubles) {

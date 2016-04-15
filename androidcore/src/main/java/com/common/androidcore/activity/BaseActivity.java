@@ -46,9 +46,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseApplication.IS_FOREGROUND = true;
+        BaseApplication.setIsForeground(true);
         BaseApplication.setTopActivity(this);
-        Logger.d("onCreate当前activity为：%s", BaseApplication.getTopActivity());
+        Logger.d("onCreate-activity:%s", BaseApplication.getTopActivity());
 
         setContentView(getActivityContentViewId());
         initView();
@@ -61,17 +61,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Logger.d("onResume当前activity为：%s", BaseApplication.getTopActivity());
+        Logger.d("onResume-activity:%s", BaseApplication.getTopActivity());
         BaseApplication.setTopActivity(this);
-        if (!BaseApplication.IS_FOREGROUND) {
-            BaseApplication.IS_FOREGROUND = true;
+        if (!BaseApplication.isForeground()) {
+            BaseApplication.setIsForeground(true);
         }
     }
 
     @Override
     protected void onPause() {
-        BaseApplication.IS_FOREGROUND = AppInfoUtil.getInstance(getContext()).checkAppIsForeground();
+        BaseApplication.setIsForeground(AppInfoUtil.getInstance(getContext()).checkAppIsForeground());
         super.onPause();
+        Logger.d("onPause-activity:%s", BaseApplication.getTopActivity());
     }
 
     /**

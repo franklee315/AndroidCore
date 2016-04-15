@@ -1,25 +1,20 @@
 package com.common.androidcore.net.squareup;
 
-import com.common.androidcore.json.JsonHelper;
 
 import java.io.File;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.Converter;
-import retrofit.converter.GsonConverter;
-import retrofit.converter.SimpleXMLConverter;
+import okhttp3.OkHttpClient;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Frank on 2015.8.19.
  */
 public class RetrofitClient {
     private String defaultBaseUrl;
-    private boolean debugMode;
-    private RequestInterceptor requestInterceptor;
-    private OkClient okClient;
     private static RetrofitClient singleton;
+    private OkHttpClient okHttpClient;
 
     /**
      * 单例获取RetrofitClient对象
@@ -27,11 +22,11 @@ public class RetrofitClient {
      * @param cacheDir 缓存文件夹
      * @return RetrofitClient对象
      */
-    public static RetrofitClient getInstance(File cacheDir) {
+    public static RetrofitClient getInstance(File cacheDir, boolean debugMode) {
         if (singleton == null) {
             synchronized (RetrofitClient.class) {
                 if (singleton == null) {
-                    singleton = new RetrofitClient(cacheDir);
+                    singleton = new RetrofitClient(cacheDir, debugMode);
                 }
             }
         }
@@ -43,15 +38,8 @@ public class RetrofitClient {
      *
      * @param cacheDir 缓存文件夹
      */
-    public RetrofitClient(File cacheDir) {
-        OkHttpUtil okHttpUtil = OkHttpUtil.getInstance(cacheDir);
-        okClient = new OkClient(okHttpUtil.getOkHttpClient());
-        requestInterceptor = new RequestInterceptor() {
-            @Override
-            public void intercept(RequestFacade request) {
-                request.addHeader("User-Agent", "Android");
-            }
-        };
+    public RetrofitClient(File cacheDir, boolean debugMode) {
+        okHttpClient = OkHttpUtil.getInstance(cacheDir, debugMode).getOkHttpClient();
     }
 
     /**
@@ -64,27 +52,16 @@ public class RetrofitClient {
     }
 
     /**
-     * debug模式开关
-     *
-     * @param debugMode 是否开启debug模式
-     */
-    public void setDebugMode(boolean debugMode) {
-        this.debugMode = debugMode;
-    }
-
-    /**
-     * 获取 RestAdapter
+     * 获取 Retrofit
      *
      * @param baseUrl baseUrl
-     * @return RestAdapter
+     * @return Retrofit
      */
-    private RestAdapter getRestAdapter(String baseUrl, Converter converter) {
-        RestAdapter.Builder builder = new RestAdapter.Builder();
-        builder.setLogLevel(debugMode ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE);
-        builder.setEndpoint(baseUrl);
-        builder.setRequestInterceptor(requestInterceptor);
-        builder.setClient(okClient);
-        builder.setConverter(converter);
+    private Retrofit getRetrofit(String baseUrl, Converter.Factory factory) {
+        Retrofit.Builder builder = new Retrofit.Builder();
+        builder.baseUrl(baseUrl);
+        builder.addConverterFactory(factory);
+        builder.client(okHttpClient);
         return builder.build();
     }
 
@@ -93,26 +70,10 @@ public class RetrofitClient {
     }
 
     public <T> T createWithJson(Class<T> service, String baseUrl) {
-        return create(service, baseUrl, new GsonConverter(JsonHelper.getGson()));
+        return create(service, baseUrl, GsonConverterFactory.create());
     }
 
-    public <T> T createWithXml(Class<T> service) {
-        return create(service, defaultBaseUrl, new SimpleXMLConverter());
-    }
-
-    public <T> T createWithXml(Class<T> service, String baseUrl) {
-        return create(service, baseUrl, new SimpleXMLConverter());
-    }
-
-    public <T> T createWithString(Class<T> service) {
-        return create(service, defaultBaseUrl, new StringConverter());
-    }
-
-    public <T> T createWithString(Class<T> service, String baseUrl) {
-        return create(service, baseUrl, new StringConverter());
-    }
-
-    private <T> T create(Class<T> service, String baseUrl, Converter converter) {
-        return getRestAdapter(baseUrl, converter).create(service);
+    private <T> T create(Class<T> service, String baseUrl, Converter.Factory factory) {
+        return getRetrofit(baseUrl, factory).create(service);
     }
 }

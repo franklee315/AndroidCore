@@ -16,11 +16,14 @@ import com.common.androidcore.app.AppInfoUtil;
 import com.common.androidcore.logger.Logger;
 import com.common.androidcore.widget.ToastUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
 
 /**
  * @author lifan 创建于 2013年11月13日 上午11:16:40
  * @version Ver 1.1 2014年2月4日 改订
+ * @version Ver 1.2 2016年4月15日 改订
  *          Activity基类
  */
 public abstract class BaseActivity extends AppCompatActivity {
@@ -49,12 +52,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         BaseApplication.setIsForeground(true);
         BaseApplication.setTopActivity(this);
         Logger.d("onCreate-activity:%s", BaseApplication.getTopActivity());
-
         setContentView(getActivityContentViewId());
         initView();
         if (!initData()) {
             ToastUtil.showToast(getContext(), R.string.no_data_tips);
             finish();
+        }else{
+            EventBus.getDefault().register(this);
         }
     }
 
@@ -73,6 +77,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         BaseApplication.setIsForeground(AppInfoUtil.getInstance(getContext()).checkAppIsForeground());
         super.onPause();
         Logger.d("onPause-activity:%s", BaseApplication.getTopActivity());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**

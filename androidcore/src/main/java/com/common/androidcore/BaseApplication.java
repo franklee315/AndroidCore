@@ -7,6 +7,9 @@ import android.text.TextUtils;
 import com.common.androidcore.app.AppInfoUtil;
 import com.common.androidcore.logger.Logger;
 
+/**
+ * app类
+ */
 public class BaseApplication extends Application {
     private static BaseApplication instance;
     private static Activity topActivity;

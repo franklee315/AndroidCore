@@ -15,7 +15,6 @@ import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author lifan 创建于 2013年11月13日 上午11:16:40
- * @version Ver 1.1 2014年2月4日 改订
  * @version Ver 1.2 2016年4月15日 改订
  *          Activity基类
  */
@@ -50,7 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!initData()) {
             ToastSingle.showToast(getContext(), R.string.no_data_tips);
             finish();
-        }else{
+        } else {
             EventBus.getDefault().register(this);
         }
     }
@@ -67,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        BaseApplication.setIsForeground(AppInfoUtil.getInstance(getContext()).checkAppIsForeground());
+        BaseApplication.setIsForeground(AppInfoUtil.getInstance().checkAppIsForeground());
         super.onPause();
         Logger.d("onPause-activity:%s", BaseApplication.getTopActivity());
     }
@@ -147,8 +146,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             view.setOnClickListener(listener);
         }
     }
-
-
 
 
 }

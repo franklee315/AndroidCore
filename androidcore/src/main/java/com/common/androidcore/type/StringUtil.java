@@ -31,7 +31,7 @@ public class StringUtil {
      * @param str 需要判断的字符串
      * @return 是否为Int
      */
-    public static int isInt(String str) {
+    public static int stringToInt(String str) {
         try {
             return Integer.parseInt(str);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class StringUtil {
      * @param str 需要判断的字符串
      * @return 是否为Long
      */
-    public static long isLong(String str) {
+    public static long stringToLong(String str) {
         try {
             return Long.parseLong(str);
         } catch (Exception e) {
@@ -55,10 +55,11 @@ public class StringUtil {
 
     /**
      * 解析字符串为boolean
+     *
      * @param str 字符串
      * @return boolean值
      */
-    public static boolean parseBoolean(String str) {
+    public static boolean stringToBoolean(String str) {
         return str.equals("true") || str.equals("1");
     }
 
@@ -70,7 +71,7 @@ public class StringUtil {
      */
     public static boolean isIDCard(String str) {
         int length = str.length();
-        return isLong(str) != -1 && (length == 15 || length == 18);
+        return stringToLong(str) != -1 && (length == 15 || length == 18);
     }
 
     /**
@@ -81,7 +82,7 @@ public class StringUtil {
      */
     public static boolean isBankCard(String str) {
         int length = str.length();
-        return isLong(str) != -1 && length > 14 && length < 20;
+        return stringToLong(str) != -1 && length > 14 && length < 20;
     }
 
     /**
@@ -214,17 +215,18 @@ public class StringUtil {
 
     /**
      * 集合转换成String
-     * @param SceneList
+     *
+     * @param sceneList
      * @return
      * @throws IOException
      */
-    public static String SceneList2String(List SceneList) throws IOException {
+    public static String sceneList2String(List sceneList) throws IOException {
         // 实例化一个ByteArrayOutputStream对象，用来装载压缩后的字节文件。
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // 然后将得到的字符数据装载到ObjectOutputStream
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
         // writeObject 方法负责写入特定类的对象的状态，以便相应的 readObject 方法可以还原它
-        objectOutputStream.writeObject(SceneList);
+        objectOutputStream.writeObject(sceneList);
         // 最后，用Base64.encode将字节文件转换成Base64编码保存在String中
         String SceneListString = new String(Base64.encode(byteArrayOutputStream.toByteArray(), Base64.DEFAULT));
         // 关闭objectOutputStream
@@ -234,15 +236,16 @@ public class StringUtil {
 
     /**
      * String转换成集合
-     * @param SceneListString
+     *
+     * @param sceneListString
      * @return
      * @throws StreamCorruptedException
      * @throws IOException
      * @throws ClassNotFoundException
      */
     @SuppressWarnings("unchecked")
-    public static List String2SceneList(String SceneListString) throws StreamCorruptedException, IOException, ClassNotFoundException {
-        byte[] mobileBytes = Base64.decode(SceneListString.getBytes(), Base64.DEFAULT);
+    public static List string2SceneList(String sceneListString) throws StreamCorruptedException, IOException, ClassNotFoundException {
+        byte[] mobileBytes = Base64.decode(sceneListString.getBytes(), Base64.DEFAULT);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         List SceneList = (List) objectInputStream.readObject();

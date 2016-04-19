@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.common.androidcore.BaseApplication;
-import com.common.androidcore.R;
 import com.common.androidcore.app.AppInfoUtil;
 import com.common.androidcore.logger.Logger;
-import com.common.androidcore.ui.ToastSingle;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -47,7 +45,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getActivityContentViewId());
         initView();
         if (!initData()) {
-            ToastSingle.showToast(getContext(), R.string.no_data_tips);
             finish();
         } else {
             EventBus.getDefault().register(this);

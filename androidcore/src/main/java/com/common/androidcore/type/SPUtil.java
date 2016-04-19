@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
+import com.common.androidcore.BaseApplication;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,12 +18,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author xufei 创建于 2013年10月30日 下午5:15:50
+ * @author lifan 创建于 2013年10月30日 下午5:15:50
  * @version Ver 1.0 2013年10月30日 改订
  *          SharedPreference工具类
  */
-public class SharedPreferencesUtil {
-    private static SharedPreferencesUtil spUtil;
+public class SPUtil {
+    private static SPUtil spUtil;
 
     /**
      * 开启过的sp缓存
@@ -31,22 +33,21 @@ public class SharedPreferencesUtil {
     private static Context context;
     private static String configName;
 
-    private SharedPreferencesUtil() {
+    private SPUtil() {
         spCache = new HashMap<>();
+        context = BaseApplication.getInstance();
     }
 
     /**
      * 获得spUtil实例
      *
-     * @param c      上下文对象
      * @param spName sp的文件名
      * @return spUtil实例
      */
-    public static SharedPreferencesUtil getInstance(Context c, String spName) {
+    public static SPUtil getInstance(String spName) {
         if (spUtil == null) {
-            spUtil = new SharedPreferencesUtil();
+            spUtil = new SPUtil();
         }
-        context = c;
         configName = spName;
         return spUtil;
     }

@@ -3,6 +3,8 @@ package com.common.androidcore.app;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.common.androidcore.BaseApplication;
+
 import java.lang.reflect.Field;
 
 /**
@@ -12,13 +14,14 @@ public class DimenUtil {
     public static DimenUtil dimenUtil;
     private Context context;
 
-    private DimenUtil(Context context) {
-        this.context = context;
+    private DimenUtil() {
+        this.context = BaseApplication.getInstance();
     }
 
-    public static DimenUtil getInstance(Context context) {
+
+    public static DimenUtil getInstance() {
         if (dimenUtil == null) {
-            dimenUtil = new DimenUtil(context);
+            dimenUtil = new DimenUtil();
         }
         return dimenUtil;
     }

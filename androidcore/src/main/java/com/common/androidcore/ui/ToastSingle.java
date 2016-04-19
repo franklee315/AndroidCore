@@ -1,15 +1,14 @@
-package com.common.androidcore.widget;
+package com.common.androidcore.ui;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
-
-import com.common.androidcore.type.StringUtil;
 
 /**
  * Created by lifan on 2014/3/21.
  * 显示Toast
  */
-public class ToastUtil {
+public class ToastSingle {
     private final static int NULL = -1;
 
     /**
@@ -61,7 +60,7 @@ public class ToastUtil {
         if (strId != NULL) {
             str = context.getResources().getString(strId);
         }
-        if (!StringUtil.isEmpty(str)) {
+        if (!TextUtils.isEmpty(str)) {
             getToast(context, str, duration).show();
         }
     }

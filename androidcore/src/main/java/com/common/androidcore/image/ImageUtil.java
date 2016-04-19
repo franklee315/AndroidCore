@@ -26,18 +26,6 @@ import java.io.InputStream;
  * @version Ver 1.1 2014年6月5日 改订 图片相关操作
  */
 public class ImageUtil {
-    private ImageUtil() {
-    }
-
-    /**
-     * 获得ImageUtil实例
-     *
-     * @return ImageUtil实例
-     */
-    public static ImageUtil getInstance() {
-        return new ImageUtil();
-    }
-
     /**
      * 压缩图片
      *
@@ -45,7 +33,7 @@ public class ImageUtil {
      * @param maxSize 最大大小单位
      * @return 压缩后的图片
      */
-    public Bitmap compressBitmap(Bitmap bitmap, double maxSize) {
+    public static Bitmap compressBitmap(Bitmap bitmap, double maxSize) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
@@ -68,7 +56,7 @@ public class ImageUtil {
      * @param newHeight 新高度
      * @return 缩放后的图片
      */
-    public Bitmap zoomImage(Bitmap bitmap, double newWidth, double newHeight) {
+    public static Bitmap zoomImage(Bitmap bitmap, double newWidth, double newHeight) {
         float width = bitmap.getWidth();
         float height = bitmap.getHeight();
         // 创建操作图片用的matrix对象
@@ -88,7 +76,7 @@ public class ImageUtil {
      * @param path 图片路径
      * @return 图片方向
      */
-    public int readPictureDegree(String path) {
+    public static int readPictureDegree(String path) {
         int degree = 0;
         try {
             ExifInterface exifInterface = new ExifInterface(path);
@@ -119,7 +107,7 @@ public class ImageUtil {
      * @param path   保存路径
      * @return 保存的图片文件
      */
-    public File saveBitmap2SDCard(Bitmap bitmap, String path) {
+    public static File saveBitmap2SDCard(Bitmap bitmap, String path) {
         File file = null;
         try {
             file = new File(path);
@@ -145,7 +133,7 @@ public class ImageUtil {
      * @return 图片
      */
     public static Bitmap getBitmapFromSDCard(String srcPath, float height,
-                                             float width) {
+                                                    float width) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         newOpts.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(srcPath, newOpts);// 此时返回bm为空
@@ -168,7 +156,7 @@ public class ImageUtil {
         return BitmapFactory.decodeFile(srcPath, newOpts);
     }
 
-    public InputStream bitmap2IS(Bitmap bitmap) {
+    public static InputStream bitmap2IS(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         InputStream sbs = new ByteArrayInputStream(baos.toByteArray());

@@ -124,6 +124,14 @@ public class DateUtil {
     }
 
 
+    /**
+     * 比较时间
+     *
+     * @param format   时间字符串格式
+     * @param timeStr1 时间字符串1
+     * @param timeStr2 时间字符串2
+     * @return
+     */
     public static long compareTime(String format, String timeStr1, String timeStr2) {
         SimpleDateFormat df = new SimpleDateFormat(format, Locale.getDefault());
         Date date1 = null, date2 = null;
@@ -140,6 +148,13 @@ public class DateUtil {
         return -1;
     }
 
+    /**
+     * 获取距离当前时间的毫秒数
+     *
+     * @param format  时间字符串格式
+     * @param timeStr 时间字符串
+     * @return 距离当前时间的毫秒数
+     */
     public static long compareTimeFromNow(String format, String timeStr) {
         SimpleDateFormat df = new SimpleDateFormat(format, Locale.getDefault());
         Date date = null;
@@ -155,6 +170,12 @@ public class DateUtil {
         return -1;
     }
 
+    /**
+     * 获取距离当前时间的毫秒数
+     *
+     * @param date 时间
+     * @return 距离当前时间的毫秒数
+     */
     public static long compareTimeFromNow(Date date) {
         if (date != null) {
             return date.getTime() - System.currentTimeMillis();

@@ -6,9 +6,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+
+import com.common.androidcore.BaseApplication;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,18 +17,19 @@ import java.util.Locale;
 
 /**
  * Created by lifan on 15/6/26.
+ * app信息
  */
 public class AppInfoUtil {
     public static AppInfoUtil appInfoUtil;
     private Context context;
 
-    private AppInfoUtil(Context context) {
-        this.context = context;
+    private AppInfoUtil() {
+        this.context = BaseApplication.getInstance();
     }
 
-    public static AppInfoUtil getInstance(Context context) {
+    public static AppInfoUtil getInstance() {
         if (appInfoUtil == null) {
-            appInfoUtil = new AppInfoUtil(context);
+            appInfoUtil = new AppInfoUtil();
         }
         return appInfoUtil;
     }
@@ -42,18 +44,9 @@ public class AppInfoUtil {
     }
 
     /**
-     * 获得IMEI
+     * 获取版本名称
      *
-     * @return IMEI
-     */
-    public String getIMEI() {
-        return ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-    }
-
-    /**
-     * 获取版本号
-     *
-     * @return 当前应用的版本号
+     * @return 当前应用的版本名称
      */
     public String getVersionName() {
         try {
@@ -83,7 +76,7 @@ public class AppInfoUtil {
     }
 
     /**
-     * 当前系统是否为中文
+     * 当前app是否为中文
      *
      * @return 是否为中文
      */
@@ -94,7 +87,7 @@ public class AppInfoUtil {
     }
 
     /**
-     * 切换语言，只有中文和英文两种
+     * 切换app语言，只有中文和英文两种
      *
      * @param isZh 是否切换到中文
      */
@@ -162,6 +155,4 @@ public class AppInfoUtil {
         }
         return false;
     }
-
-
 }

@@ -2,25 +2,60 @@ package com.common.androidcore.app;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.Environment;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
+import com.common.androidcore.BaseApplication;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
+/**
+ * 硬件相关
+ */
 public class EnvironmentUtils {
-    private static final String TAG = "GTGJ_EnvironmentUtils";
+    public static EnvironmentUtils environmentUtils;
+    private Context context;
+    private TelephonyManager tm;
+
+    private EnvironmentUtils() {
+        this.context = BaseApplication.getInstance();
+    }
+
+    public static EnvironmentUtils getInstance() {
+        if (environmentUtils == null) {
+            environmentUtils = new EnvironmentUtils();
+        }
+        return environmentUtils;
+    }
+
+    private TelephonyManager getTm() {
+        if (tm == null) {
+            tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        }
+        return tm;
+    }
+
+
+    /**
+     * 检测SDCard是否插入
+     *
+     * @return 是否插入
+     */
+    public boolean isSDCardLoad() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
 
     /**
      * 获得设备特征码
      *
-     * @param context context
      * @return 设备特征码
      */
-    public static String getDeviceRelatedCode(Context context) {
-        final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    public String getUUID() {
+        final TelephonyManager tm = getTm();
         final String tmDevice, tmSerial, androidId;
         tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
@@ -37,7 +72,7 @@ public class EnvironmentUtils {
             return uuid.toString();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
     }
 
@@ -46,13 +81,13 @@ public class EnvironmentUtils {
      *
      * @return 手机是否root
      */
-    public static boolean isRoot() {
+    public boolean isRoot() {
         try {
-            File f = null;
+            File file;
             final String[] suSearchPaths = {"/system/bin/", "/system/xbin/", "/system/sbin/", "/sbin/", "/vendor/bin/"};
             for (String path : suSearchPaths) {
-                f = new File(path + "su");
-                if (f.exists()) {
+                file = new File(path + "su");
+                if (file.exists()) {
                     return true;
                 }
             }
@@ -65,10 +100,9 @@ public class EnvironmentUtils {
     /**
      * 获得Mac地址
      *
-     * @param context context
      * @return mac地址
      */
-    public static String getMacAddress(Context context) {
+    public String getMacAddress() {
         try {
             WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             if (wifi == null) {
@@ -85,11 +119,10 @@ public class EnvironmentUtils {
     /**
      * 获取运营商
      *
-     * @param context context
      * @return 运营商名称
      */
-    public static String getNetworkOperator(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    public String getNetworkName() {
+        TelephonyManager telManager = getTm();
 
         int phoneType = telManager.getPhoneType();
         if (phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
@@ -125,22 +158,19 @@ public class EnvironmentUtils {
     /**
      * 取得IMEI参数
      *
-     * @param context context
      * @return IMEI
      */
-    public static String getImei(Context context) {
-        String imei = "";
+    public String getIMEI() {
         try {
-            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = getTm();
             String deviceId = tm.getDeviceId();
             if (TextUtils.isEmpty(deviceId) || deviceId.contains("unknown")) {
-                // 取不到imei或imei不正确时，用androidId替代
                 deviceId = "aid" + Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
             }
-            imei = java.net.URLEncoder.encode(deviceId + "", "UTF-8");
+            return java.net.URLEncoder.encode(deviceId, "UTF-8");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return imei;
+        return null;
     }
 }

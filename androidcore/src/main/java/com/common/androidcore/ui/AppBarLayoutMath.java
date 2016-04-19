@@ -1,4 +1,4 @@
-package com.common.androidcore.widget;
+package com.common.androidcore.ui;
 
 /**
  * Created by Shawn on 2015/7/10.

@@ -2,10 +2,6 @@ package com.common.androidcore;
 
 import android.app.Activity;
 import android.app.Application;
-import android.text.TextUtils;
-
-import com.common.androidcore.app.AppInfoUtil;
-import com.common.androidcore.logger.Logger;
 
 /**
  * app类
@@ -18,11 +14,6 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        String processName = AppInfoUtil.getInstance(this).getCurProcessName();
-        Logger.d("current process name is %s", processName);
-        if (!TextUtils.equals(processName, getPackageName())) {
-            return;
-        }
         if (instance == null) {
             instance = this;
         }

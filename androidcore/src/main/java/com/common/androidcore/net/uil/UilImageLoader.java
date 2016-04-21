@@ -18,7 +18,8 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.io.File;
 
 /**
- * Created by Frank on 2015.8.24.
+ * Created by lifa on 2015.8.24.
+ * uil图片工具类
  */
 public class UilImageLoader {
     private static volatile UilImageLoader instance = null;

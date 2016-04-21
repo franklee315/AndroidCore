@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 
 /**
  * 数字的处理类
- * <p/>
  * Created by Shawn on 2015/4/17.
  */
 public class NumberUtil {
@@ -43,21 +42,23 @@ public class NumberUtil {
 
     /**
      * 控制浮点的精度
-     * @param value 原始值
-     * @param scale 精度位数（保留的小数位数）
+     *
+     * @param value     原始值
+     * @param scale     精度位数（保留的小数位数）
      * @param roundMode 精度取值方式
      * @return 精度计算后的数据
      */
     public static double round(double value, int scale, int roundMode) {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(scale, roundMode);
-        double d= bd.doubleValue();
+        double d = bd.doubleValue();
         bd = null;
         return d;
     }
 
     /**
      * double加法运算
+     *
      * @param doubles 需要进行运算的double
      * @return
      */

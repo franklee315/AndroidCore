@@ -16,7 +16,7 @@ import java.util.Map;
 import javax.crypto.Cipher;
 
 /**
- * @author xufei 创建于 2013年10月30日 下午3:15:21
+ * @author lifan 创建于 2013年10月30日 下午3:15:21
  * @version Ver 1.0 2013年10月30日 改订
  *          RSA加密
  */

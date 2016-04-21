@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Frank on 2015.9.16.
+ * 解析URL参数用到的Bean
  */
 public class KeyValue implements Serializable {
     public String key;

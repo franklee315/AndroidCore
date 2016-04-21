@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * @ClassName: SmartTextView
- * @Description: TODO     智能textview，可以根据文本控件自动显示和隐藏(gone)自身
+ * Created by lifan on 2015/7/10.
+ * 智能textview，可以根据文本控件自动显示和隐藏(gone)自身
  */
 public class SmartTextView extends TextView {
 

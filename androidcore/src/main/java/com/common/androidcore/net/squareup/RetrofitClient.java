@@ -9,7 +9,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by Frank on 2015.8.19.
+ * Created by lifa on 2015.8.19.
+ * Retrofit简单封装
  */
 public class RetrofitClient {
     private String defaultBaseUrl;

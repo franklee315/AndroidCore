@@ -8,7 +8,8 @@ import com.common.androidcore.BaseApplication;
 import java.lang.reflect.Field;
 
 /**
- * Created by Administrator on 2016/3/30.
+ * Created by lifan on 2016/3/30.
+ * 尺寸工具
  */
 public class DimenUtil {
     public static DimenUtil dimenUtil;

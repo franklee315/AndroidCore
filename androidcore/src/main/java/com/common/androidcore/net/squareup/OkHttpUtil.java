@@ -9,7 +9,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
- * Created by Frank on 2015.8.24.
+ * Created by lifa on 2015.8.24.
+ * OkHttp相关配置
  */
 public class OkHttpUtil {
     private final static int RESPONSE_CACHE_SIZE = 1024 * 1024 * 10;

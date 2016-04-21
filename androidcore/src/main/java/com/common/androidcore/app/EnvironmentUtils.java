@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 /**
+ * Created by lifan on 15/6/26.
  * 硬件相关
  */
 public class EnvironmentUtils {

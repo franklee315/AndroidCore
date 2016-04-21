@@ -7,7 +7,8 @@ import java.net.HttpCookie;
 import java.util.List;
 
 /**
- * Created by Frank on 2015.9.8.
+ * Created by lifa on 2015.9.8.
+ * Cookie管理
  */
 public class CookieUtil {
     private static CookieUtil singleton;

@@ -7,6 +7,10 @@ import android.os.Parcelable;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+/**
+ * Created by lifan on 2015/7/10.
+ * 界面相关
+ */
 public class UIUtil {
 
     private UIUtil() {

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 
 /**
- * app类
+ * Created by lifan on 2015/7/10.
+ * Application基类
  */
 public class BaseApplication extends Application {
     private static BaseApplication instance;

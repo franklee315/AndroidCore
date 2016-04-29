@@ -29,20 +29,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected abstract boolean initData();
 
-    /**
-     * 获取activity的布局id
-     *
-     * @return activity布局ID
-     */
-    protected abstract int getActivityContentViewId();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaseApplication.setIsForeground(true);
         BaseApplication.setTopActivity(this);
         Logger.d("onCreate-activity:%s", BaseApplication.getTopActivity());
-        setContentView(getActivityContentViewId());
         initView();
         if (!initData()) {
             finish();

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *  == =
  * Created by lifan on 15/6/26.
  * app信息
  */
